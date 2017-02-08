@@ -52,15 +52,35 @@ const styles = StyleSheet.create({
 class Player extends React.Component {
   constructor(props) {
     super(props);
+    if (this.props.playerData === {}) {
+      let newData = {};
+      for (let p = 1; p <= this.props.playerCount; p++) {
+        newData.p = this.buildNewBoard();
+      }
+    }
     this.state = {
       currentPlayer: 1,
       playerName: '',
     };
   }
 
+  buildNewBoard(playerID) {
+    const board = { playerID: playerID, name: '', values: {}, winner: false, };
+    for (let row = 0; row < this.props.boardSize; row++) {
+      for (let col = 0; col < this.props.boardSize; col++) {
+        board.values[BingoBoard.genKey(row, col)] = {
+          name: '________',
+          done: false,
+        };
+      }
+    }
+    // console.log(board);
+    return board;
+  }
+
   genTopBar() {
     const buttons = [];
-    for (let x = 1; x <= this.props.playerCount; x += 1) {
+    for (let x = 1; x <= this.props.playerCount; x++) {
       buttons.push(
         <View
           style={[styles.button, this.state.currentPlayer === x ? styles.focus : {}]}
@@ -152,6 +172,7 @@ Player.propTypes = {
   boardSize: React.PropTypes.number,
   minutesPerChore: React.PropTypes.number,
   winCondition: React.PropTypes.string,
+  playerData: React.PropTypes.Object,
 };
 
 export default Player;

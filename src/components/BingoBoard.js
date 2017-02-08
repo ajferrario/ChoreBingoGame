@@ -107,21 +107,6 @@ class BingoBoard extends Component {
     return this.state.values[BingoBoard.genKey(row, col)];
   }
 
-  buildNewBoard() {
-    const board = { values: {}, winner: false, name: this.props.playerName };
-    for (let row = 0; row < this.props.bdSize; row++) {
-      for (let col = 0; col < this.props.bdSize; col++) {
-        board.values[BingoBoard.genKey(row, col)] = {
-          name: 'Empty',
-          done: false,
-          focusKey: null,
-        };
-      }
-    }
-    console.log(board)
-    return board;
-  }
-
   isWinner() {
     switch (this.props.winCondition) {
       case 'Corners':

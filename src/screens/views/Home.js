@@ -113,6 +113,7 @@ class Home extends React.Component {
                 boardSize: this.state.boardSize,
                 minutesPerChore: this.state.minutesPerChore,
                 winCondition: this.state.winCondition,
+                choreBoardData: {},
               });
             }}
           >
