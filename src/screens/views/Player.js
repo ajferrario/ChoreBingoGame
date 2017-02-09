@@ -12,6 +12,9 @@ import {
   Actions,
 } from 'react-native-router-flux';
 
+import {
+  genKey,
+} from '../../logic/GameLogic';
 
 import GlobalStyles from '../../styles/GlobalStyles';
 import BingoBoard from '../../components/BingoBoard';
@@ -52,30 +55,49 @@ const styles = StyleSheet.create({
 class Player extends React.Component {
   constructor(props) {
     super(props);
-    if (this.props.playerData === {}) {
-      let newData = {};
+    let gameData = {};
+    if (Object.keys(this.props.playerData).length === 0 && this.props.playerData.constructor === Object) {
+      console.log('playerData worked ok');
       for (let p = 1; p <= this.props.playerCount; p++) {
-        newData.p = this.buildNewBoard();
+        console.log('adding player ' + p.toString());
+        gameData[p] = this.buildNewBoard();
       }
+    } else {
+      gameData = this.props.playerData;
     }
     this.state = {
       currentPlayer: 1,
-      playerName: '',
+      boardData: gameData,
     };
+    console.log(gameData);
   }
 
-  buildNewBoard(playerID) {
-    const board = { playerID: playerID, name: '', values: {}, winner: false, };
+  buildNewBoard() {
+    const board = { name: '', values: {}, winner: false, };
     for (let row = 0; row < this.props.boardSize; row++) {
       for (let col = 0; col < this.props.boardSize; col++) {
-        board.values[BingoBoard.genKey(row, col)] = {
-          name: '________',
+        board.values[genKey(row, col)] = {
+          name: '',
           done: false,
         };
       }
     }
     // console.log(board);
     return board;
+  }
+
+  updateChoreName(row, col, newName) {
+    const dataStateHolder = JSON.parse(JSON.stringify(this.state.boardData));
+    console.log(dataStateHolder);
+    dataStateHolder[this.state.currentPlayer].values[genKey(row, col)].name = newName;
+    this.setState({boardData: dataStateHolder});
+  }
+
+  updatePlayerName(newName) {
+    const dataStateHolder = JSON.parse(JSON.stringify(this.state.boardData));
+    console.log(dataStateHolder);
+    dataStateHolder[this.state.currentPlayer].name = newName;
+    this.setState({boardData: dataStateHolder});
   }
 
   genTopBar() {
@@ -137,7 +159,9 @@ class Player extends React.Component {
       borderColor: color,
     };
   }
+
   render() {
+    console.log(this.state.boardData);
     return (
       <View style={GlobalStyles.container}>
         <View style={[styles.topBar, this.colorStyle('blue')]}>
@@ -147,17 +171,16 @@ class Player extends React.Component {
           <View style={[styles.nameEntryBar, this.colorStyle('green')]}>
             <TextInput
               style={{ flex: 1, height: 40, borderColor: 'gray', borderWidth: 1 }}
-              onChangeText={text => this.setState({ playerName: text })}
+              onChangeText={newName => this.updatePlayerName(newName)}
               placeholder="Input Name..."
-              value={this.state.playerName}
+              value={this.state.boardData[this.state.currentPlayer].name}
             />
           </View>
           <View style={[styles.boardHolder, this.colorStyle('pink')]}>
             <BingoBoard
-              bdSize={this.props.boardSize}
-              playerID={this.state.currentPlayer}
-              winCondition={this.props.winCondition}
-              playerName={this.state.playerName}
+              boardData={this.state.boardData[this.state.currentPlayer].values}
+              boardSize={this.props.boardSize}
+              onChoreUpdate={(row, col, newName) => this.updateChoreName(row, col, newName)}
             />
           </View>
         </View>
@@ -166,13 +189,15 @@ class Player extends React.Component {
     );
   }
 }
-
+Player.defaultProps = {
+  playerData: {},
+}
 Player.propTypes = {
   playerCount: React.PropTypes.number,
   boardSize: React.PropTypes.number,
   minutesPerChore: React.PropTypes.number,
   winCondition: React.PropTypes.string,
-  playerData: React.PropTypes.Object,
+  playerData: React.PropTypes.object,
 };
 
 export default Player;

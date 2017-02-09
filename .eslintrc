@@ -1,0 +1,17 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true
+    },
+    "plugins": [
+        "react"
+    ],
+    "extends": [
+        "google",
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "rules": {
+        // overrides
+    }
+}
