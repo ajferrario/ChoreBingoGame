@@ -55,11 +55,10 @@ const styles = StyleSheet.create({
 class Player extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props.playerData);
     let gameData = {};
     if (Object.keys(this.props.playerData).length === 0 && this.props.playerData.constructor === Object) {
-      console.log('playerData worked ok');
       for (let p = 1; p <= this.props.playerCount; p++) {
-        console.log('adding player ' + p.toString());
         gameData[p] = this.buildNewBoard();
       }
     } else {
@@ -69,7 +68,6 @@ class Player extends React.Component {
       currentPlayer: 1,
       boardData: gameData,
     };
-    console.log(gameData);
   }
 
   buildNewBoard() {
@@ -82,20 +80,17 @@ class Player extends React.Component {
         };
       }
     }
-    // console.log(board);
     return board;
   }
 
   updateChoreName(row, col, newName) {
     const dataStateHolder = JSON.parse(JSON.stringify(this.state.boardData));
-    console.log(dataStateHolder);
     dataStateHolder[this.state.currentPlayer].values[genKey(row, col)].name = newName;
     this.setState({boardData: dataStateHolder});
   }
 
   updatePlayerName(newName) {
     const dataStateHolder = JSON.parse(JSON.stringify(this.state.boardData));
-    console.log(dataStateHolder);
     dataStateHolder[this.state.currentPlayer].name = newName;
     this.setState({boardData: dataStateHolder});
   }
@@ -123,30 +118,33 @@ class Player extends React.Component {
     return buttons;
   }
 
+  isSetupComplete() {
+    for (let i = 1; i <= this.props.playerCount; i++) {
+      const vals = this.state.boardData[i].values;
+      for (var key in vals) {
+        if (vals[key].name === '') {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   genBottomBar() {
     return (
       <View style={[styles.bottomBar, this.colorStyle('red')]}>
         <TouchableOpacity
           onPress={() => (
                  Actions.activechore({
-                   playerCount: this.props.playerCount,
-                   boardsize: this.props.boardSize,
+                   playerData: this.state.boardData,
                    minutesPerChore: this.props.minutesPerChore,
                    winCondition: this.props.winCondition,
                  })
              )}
+          disabled={false /*this.isSetupComplete()*/}
         >
           <Text style={GlobalStyles.h2}>
-            Active Chore
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => (
-                 Actions.winner()
-             )}
-        >
-          <Text style={GlobalStyles.h2}>
-            Winner
+            Next
           </Text>
         </TouchableOpacity>
       </View>
@@ -161,7 +159,6 @@ class Player extends React.Component {
   }
 
   render() {
-    console.log(this.state.boardData);
     return (
       <View style={GlobalStyles.container}>
         <View style={[styles.topBar, this.colorStyle('blue')]}>
@@ -180,7 +177,9 @@ class Player extends React.Component {
             <BingoBoard
               boardData={this.state.boardData[this.state.currentPlayer].values}
               boardSize={this.props.boardSize}
-              onChoreUpdate={(row, col, newName) => this.updateChoreName(row, col, newName)}
+              onChoreUpdate={(row, col, newName) => {
+                this.updateChoreName(row, col, newName);
+              }}
             />
           </View>
         </View>

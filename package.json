@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "minutes-seconds-milliseconds": "^1.0.3",
     "react": "~15.4.0-rc.4",
     "react-native": "0.41.1",
     "react-native-modal-dropdown": "^0.4.1",

@@ -13,7 +13,9 @@ import {
   getChore,
 } from '../logic/GameLogic.js'
 
-//import ChoreConfigPopup from '../components/ChoreConfigPopup';
+import {
+  Actions,
+} from 'react-native-router-flux';
 
 const styles = StyleSheet.create({
   grid: {
@@ -29,7 +31,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  button: {
+  buttonDone: {
+    backgroundColor: '#ff69b4',
+    borderRadius: 4,
+  },
+  buttonUndone: {
     backgroundColor: '#48afdb',
     borderRadius: 4,
   },
@@ -62,13 +68,7 @@ class BingoBoard extends Component {
           style={styles.cell}
           key={col}
         >
-          <TouchableHighlight
-            style={styles.button}
-            onPress={() => this.chorePopup(row, col)}
-            underlayColor={'#dddddd'}
-          >
-            {this.createCell(row, col)}
-          </TouchableHighlight>
+        {this.createCell(row, col)}
         </View>
       )
     }
@@ -78,15 +78,20 @@ class BingoBoard extends Component {
   createCell(row, col) {
     const chore = getChore(row, col, this.props.boardData);
     return (
-          <Text style={styles.btnText}>
-            {chore.name === '' ? 'Add Chore': chore.name}
-          </Text>
+      <TouchableHighlight
+        style={chore.done ? styles.buttonDone : styles.buttonUndone}
+        onPress={() => Actions.choreconfig({
+          updateChoreName: this.props.onChoreUpdate,
+          row: row,
+          col: col,
+        })}
+        underlayColor={'#dddddd'}
+      >
+      <Text style={styles.btnText}>
+        {chore.name === '' ? 'Add Chore': chore.name}
+      </Text>
+      </TouchableHighlight>
     );
-  }
-
-  chorePopup(row, col) {
-    alert('This is where the chore');
-    this.props.onChoreUpdate(row, col, 'Potato');
   }
 
   render() {
@@ -102,6 +107,7 @@ BingoBoard.propTypes = {
   boardData: React.PropTypes.object,
   boardSize: React.PropTypes.number,
   onChoreUpdate: React.PropTypes.func,
+  playerName: React.PropTypes.string,
 };
 
 export default BingoBoard;
