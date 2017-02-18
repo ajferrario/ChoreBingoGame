@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
 class Player extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.playerData);
     let gameData = {};
     if (Object.keys(this.props.playerData).length === 0 && this.props.playerData.constructor === Object) {
       for (let p = 1; p <= this.props.playerCount; p++) {

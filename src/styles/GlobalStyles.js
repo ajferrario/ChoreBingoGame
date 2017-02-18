@@ -19,7 +19,6 @@ const GlobalStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    alignSelf: 'flex-end',
   },
   button: {
     backgroundColor: 'deepskyblue',
@@ -52,6 +51,12 @@ const GlobalStyles = StyleSheet.create({
   body: {
     fontSize: 14,
     textAlign: 'center',
+  },
+  listItem: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

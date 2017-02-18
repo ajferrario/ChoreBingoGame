@@ -19,14 +19,16 @@ function getChore(row, col, values) {
 }
 
 function isWinner(winCondition, values) {
+  console.log('checking winner for the following')
+  console.log(values)
   const maxIndex = Math.sqrt(Object.keys(values).length) - 1;
   switch (winCondition) {
     case 'Corners':
       return cornersCheck(maxIndex, values);
     case 'Vertical':
-      return directionCheck('r', maxIndex, values);
+      return directionCheck('vertical', maxIndex, values);
     case 'Horizontal':
-      return directionCheck('c', maxIndex, values);
+      return directionCheck('horizontal', maxIndex, values);
     case 'Diagonal':
       return diagonalCheck(maxIndex, values);
     case 'Blackout':
@@ -37,6 +39,7 @@ function isWinner(winCondition, values) {
 }
 
 function cornersCheck(maxIndex, values) {
+  console.log('cornersCheck')
   return (
     getChore(0, 0, values).done &&
     getChore(0, maxIndex, values).done &&
@@ -45,33 +48,50 @@ function cornersCheck(maxIndex, values) {
   );
 }
 
-function directionCheck(dir, maxIndex, values) {
+function directionCheck(direction, maxIndex, values) {
+  let dir = 'r' // Assuming horizontal
+  if (direction === 'vertical') {
+    console.log('vertical')
+    dir = 'c' // Change if it's vertical
+  }
+  console.log('directionCheck '.concat(dir))
   for (let i = 0; i <= maxIndex; i++) {
     const boardKeys = Object.keys(values);
-    const keysInDir = boardKeys.filter(key => key.includes(dir + i));
+    console.log(dir.concat(i.toString()))
+    const keysInDir = boardKeys.filter(key => key.includes(dir.concat(i.toString())));
+    console.log(keysInDir)
     const doneInDir = keysInDir.map(key => values[key].done);
+    console.log(doneInDir)
     if (!doneInDir.includes(false)) {
+      console.log('winner')
       return true;
     }
   }
+  console.log('not a winner')
   return false;
 }
 
 function diagonalCheck(maxIndex, values) {
+  console.log('diagonalCheck')
   const same = [];
   const opposite = [];
-  for (let i = 0; i < maxIndex; i++) {
+  for (let i = 0; i <= maxIndex; i++) {
     same.push(getChore(i, i, values).done);
-    opposite.push(getChore(i, maxIndex - i, values));
+    opposite.push(getChore(i, maxIndex - i, values).done);
   }
   if (!same.includes(false) || !opposite.includes(false)) {
+    console.log('winner')
+    console.log(same)
+    console.log(opposite)
     return true;
   }
+  console.log('did\'nt win')
   return false;
 }
 
 function blackoutCheck(values) {
-  if (Object.keys(values).map(key => values[key].done).contains(false)) {
+  console.log('blackoutCheck')
+  if (Object.keys(values).map(key => values[key].done).includes(false)) {
     return false;
   }
   return true;

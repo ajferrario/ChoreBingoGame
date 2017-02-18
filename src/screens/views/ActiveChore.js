@@ -13,6 +13,9 @@ import {
   Actions,
 } from 'react-native-router-flux';
 
+import {
+  isWinner,
+} from '../../logic/GameLogic';
 import GlobalStyles from '../../styles/GlobalStyles';
 
 class ActiveChore extends React.Component {
@@ -96,15 +99,35 @@ class ActiveChore extends React.Component {
     }
   }
 
+
+
   startStopNextPress() {
     if (this.state.choreComplete) {
-      Actions.player({
-        playerCount: Object.keys(this.state.playerData).length,
-        boardSize: Math.sqrt(Object.keys(this.state.playerData[1].values).length),
-        minutesPerChore: this.props.minutesPerChore,
-        winCondition: this.props.winCondition,
-        playerData: this.markChoresComplete(),
-      })
+      const dataStateHolder = this.markChoresComplete();
+      const numberOfPlayers = Object.keys(dataStateHolder).length;
+      const winners = [];
+      for ( let p = 1; p <= numberOfPlayers; p++) {
+        if ( isWinner(this.props.winCondition, dataStateHolder[p].values) ) {
+          dataStateHolder[p].winner = true;
+          winners.push({
+            playerID: p,
+            name: dataStateHolder[p].name
+          });
+        }
+      }
+      if ( winners.length > 0 ) {
+        Actions.winner({
+          winners: winners
+        })
+      } else {
+        Actions.player({
+          playerCount: Object.keys(this.state.playerData).length,
+          boardSize: Math.sqrt(Object.keys(this.state.playerData[1].values).length),
+          minutesPerChore: this.props.minutesPerChore,
+          winCondition: this.props.winCondition,
+          playerData: dataStateHolder,
+          })
+      }
     } else {
       if (this.state.timerRunning === false) {
         this.setState({
@@ -139,6 +162,10 @@ class ActiveChore extends React.Component {
 
   timeDisplay() {
     return formatTime((this.props.minutesPerChore * 60 * 1000) - this.state.timeUsed);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
