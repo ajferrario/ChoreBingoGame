@@ -18,9 +18,33 @@ import GlobalStyles from '../../styles/GlobalStyles';
 import HomeData from '../../data/HomeData';
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
   button: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  label: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  selector: {
+    flex: 3,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     justifyContent: 'center',
   },
 });
@@ -50,9 +74,13 @@ class Home extends React.Component {
           </Text>
         </View>
         <View style={GlobalStyles.boxContainer}>
+        <View style={GlobalStyles.listItem}>
           <Text style={GlobalStyles.body}>
             Number of players
           </Text>
+        </View>
+        <View style={GlobalStyles.listItem}>
+        </View>
           <ModalDropdown
             style={GlobalStyles.button}
             options={HomeData.numberOfPlayers}
