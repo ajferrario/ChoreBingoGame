@@ -2,52 +2,42 @@ import React from 'react';
 
 import {
   View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
 } from 'react-native';
 
-import ModalDropdown from 'react-native-modal-dropdown';
-// import BottomBar from '../../components/BottomBar';
+import {
+  Container,
+  Header,
+  Content,
+  Footer,
+  Left,
+  Body,
+  Right,
+  Button,
+  Icon,
+  Title,
+  FooterTab,
+  Text,
+  Grid,
+  Row,
+  H1,
+} from 'native-base';
 
 import {
   Actions,
 } from 'react-native-router-flux';
 
-import GlobalStyles from '../../styles/GlobalStyles';
-import HomeData from '../../data/HomeData';
+import {
+  ScreenStyle,
+  ColumnStyle,
+  RowStyle,
+  ContainerStyle,
+} from '../../styles/Structure';
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-  button: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  label: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  selector: {
-    flex: 3,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-});
+import {
+  Scaffold,
+} from '../../styles/Dev';
+
+import HomeData from '../../data/HomeData';
 
 class Home extends React.Component {
   constructor(props) {
@@ -61,6 +51,35 @@ class Home extends React.Component {
   }
 
   render() {
+    return (
+      <Container>
+        <Header>
+          <Left>
+            <Button transparent>
+              <Icon name='menu' />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Chore Bingo</Title>
+          </Body>
+          <Right />
+        </Header>
+        <View style={ScreenStyle()}>
+          <View style={Scaffold(RowStyle())}>
+            <H1>Welcome To Chore Bingo!</H1>
+          </View>
+        </View>
+        <Footer>
+          <FooterTab>
+            <Button full>
+              <Text>Play</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      </Container>
+    );
+  }
+  /* render() {
     return (
       <View style={GlobalStyles.container}>
         <View style={GlobalStyles.boxContainer}>
@@ -151,7 +170,7 @@ class Home extends React.Component {
         </View>
       </View>
     );
-  }
+  } */
 }
 
 export default Home;

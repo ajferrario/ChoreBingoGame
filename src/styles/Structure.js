@@ -1,8 +1,5 @@
 /* Module */
 import _ from 'lodash';
-import {
-  StyleSheet,
-} from 'react-native';
 
 /* Local */
 import {
@@ -38,30 +35,46 @@ function _direction(flexDirection) {
   return directionSettings;
 }
 
-function _align(orientation, align) {
+function _align(orientation, vAlign, hAlign) {
   /*
   Provide an orientation independent logical alignment setting
   */
-  const propName = (orientation === 'row'? 'justifyContent' : 'alignItems');
   const alignment = {};
-  switch ( align ) {
+  const vProp = (orientation === 'row'? 'justifyContent' : 'alignItems');
+  const hProp = (orientation === 'row'? 'alignItems' : 'justifyContent');
+
+  switch ( vAlign ) {
     case 'left':
-      alignment[propName] = 'flex-start';
+      alignment[vProp] = 'flex-start';
       break;
     case 'right':
-      alignment[propName] = 'flex-end';
+      alignment[vProp] = 'flex-end';
       break;
     case 'center':
-      alignment[propName] = 'center';
+      alignment[vProp] = 'center';
       break;
     default:
-      alignment[propName] = 'stretch';
+      alignment[vProp] = 'stretch';
+  }
+
+  switch ( hAlign ) {
+    case 'left':
+      alignment[hProp] = 'flex-start';
+      break;
+    case 'right':
+      alignment[hProp] = 'flex-end';
+      break;
+    case 'center':
+      alignment[hProp] = 'center';
+      break;
+    default:
+      alignment[hProp] = 'stretch';
   }
   return alignment;
 }
 
 /* Public */
-function Screen(backgroundColor=Utility.light,flexDirection='column') {
+function ScreenStyle(backgroundColor=Utility.light,flexDirection='column') {
   /*
   Flexible View style intended for the highest level view of any scene.
 
@@ -72,36 +85,36 @@ function Screen(backgroundColor=Utility.light,flexDirection='column') {
   This style should NEVER contain anything but other view objects since it will
   not react properly to shaping.
    */
-  return StyleSheet.create(_structure(1, backgroundColor, flexDirection));
+  return _structure(1, backgroundColor, flexDirection);
 }
 
-function Column(flex=1, backgroundColor='transparent', align='center') {
+function ColumnStyle(flex=1, backgroundColor='', hAlign='center', vAlign='flex-start') {
   /*
   Flexible View style intended as a vertical subdivision of a scene.
   */
   const style = _structure(flex, backgroundColor, 'column');
-  return StyleSheet.create(_.merge(style, _align('column', align)));
+  return _.merge(style, _align('column', hAlign, vAlign), );
 }
 
-function Row(flex=1, backgroundColor='transparent', align='center') {
+function RowStyle(flex=1, backgroundColor='transparent', hAlign='flex-start', vAlign='center') {
   /*
   Flexible View style intended as a horizontal subdivision of a scene
   */
   const style = _structure(flex, backgroundColor, 'row');
-  return StyleSheet.create(_.merge(style, _align('row', align)));
+  return _.merge(style, _align('row', hAlign, vAlign));
 }
 
-function Container(flex=1, backgroundColor='transparent', align='center') {
+function ContainerStyle(flex=1, backgroundColor='transparent', hAlign='center', vAlign='center') {
   /*
   Flexible View style intended as a container for a single component
   */
   const style = _structure(flex, backgroundColor, 'center');
-  return StyleSheet.create(_.merge(style, _align('center', align)));
+  return _.merge(style, _align('center', hAlign, vAlign));
 }
 
 export {
-  Screen,
-  Column,
-  Row,
-  Container,
+  ScreenStyle,
+  ColumnStyle,
+  RowStyle,
+  ContainerStyle,
 };
