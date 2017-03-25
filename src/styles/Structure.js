@@ -1,11 +1,6 @@
 /* Module */
 import _ from 'lodash';
 
-/* Local */
-import {
-  Utility,
-} from './StyleGuide';
-
 /* Private */
 function _structure(flex, backgroundColor, flexDirection) {
   /*
@@ -24,7 +19,7 @@ function _direction(flexDirection) {
   */
   const directionSettings = {
     flexDirection: flexDirection,
-    justifyContent: 'stretch',
+    justifyContent: 'space-around',
     alignItems: 'stretch',
   };
   if ( flexDirection === 'column' ) {
@@ -38,6 +33,9 @@ function _direction(flexDirection) {
 function _align(orientation, vAlign, hAlign) {
   /*
   Provide an orientation independent logical alignment setting
+  Acceptable values
+  SECONDARY AXIS alignItems = ['flex-start', 'flex-end', 'center', 'stretch']
+  PRIMARY AXIS justifyContent = ['flex-start', 'flex-end', 'center', 'space-around']
   */
   const alignment = {};
   const vProp = (orientation === 'row'? 'justifyContent' : 'alignItems');
@@ -54,7 +52,11 @@ function _align(orientation, vAlign, hAlign) {
       alignment[vProp] = 'center';
       break;
     default:
-      alignment[vProp] = 'stretch';
+      if ( vProp === 'alignItems') {
+        alignment[vProp] = 'stretch';
+      } else {
+        alignment[vProp] = 'space-around';
+      }
   }
 
   switch ( hAlign ) {
@@ -68,13 +70,17 @@ function _align(orientation, vAlign, hAlign) {
       alignment[hProp] = 'center';
       break;
     default:
+    if ( hProp === 'alignItems') {
       alignment[hProp] = 'stretch';
+    } else {
+      alignment[hProp] = 'space-around';
+    }
   }
   return alignment;
 }
 
 /* Public */
-function ScreenStyle(backgroundColor=Utility.light,flexDirection='column') {
+function ScreenStyle(backgroundColor='transparent',flexDirection='column') {
   /*
   Flexible View style intended for the highest level view of any scene.
 
@@ -88,7 +94,7 @@ function ScreenStyle(backgroundColor=Utility.light,flexDirection='column') {
   return _structure(1, backgroundColor, flexDirection);
 }
 
-function ColumnStyle(flex=1, backgroundColor='', hAlign='center', vAlign='flex-start') {
+function ColumnStyle(flex=1, backgroundColor='transparent', hAlign='center', vAlign='flex-start') {
   /*
   Flexible View style intended as a vertical subdivision of a scene.
   */
@@ -108,8 +114,8 @@ function ContainerStyle(flex=1, backgroundColor='transparent', hAlign='center', 
   /*
   Flexible View style intended as a container for a single component
   */
-  const style = _structure(flex, backgroundColor, 'center');
-  return _.merge(style, _align('center', hAlign, vAlign));
+  const style = _structure(flex, backgroundColor, 'column');
+  return _.merge(style, _align('column', hAlign, vAlign));
 }
 
 export {

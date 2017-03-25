@@ -65,8 +65,21 @@ class Home extends React.Component {
           <Right />
         </Header>
         <View style={ScreenStyle()}>
-          <View style={Scaffold(RowStyle())}>
-            <H1>Welcome To Chore Bingo!</H1>
+          <View style={Scaffold(ColumnStyle())}>
+            <View style={Scaffold(RowStyle())}>
+              <H1>Hi</H1>
+              <H1>Hi</H1>
+              <H1>Hi</H1>
+            </View>
+            <View style={Scaffold(ContainerStyle())}>
+              <H1>Welcome To Chore Bingo!</H1>
+            </View>
+            <View style={Scaffold(ContainerStyle())}>
+              <H1>Welcome To Chore Bingo!</H1>
+            </View>
+            <View style={Scaffold(ContainerStyle())}>
+              <H1>Welcome To Chore Bingo!</H1>
+            </View>
           </View>
         </View>
         <Footer>
