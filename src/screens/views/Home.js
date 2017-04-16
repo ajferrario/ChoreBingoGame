@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 
 import {
-  Container,
   Header,
   Content,
   Footer,
@@ -18,20 +17,19 @@ import {
   FooterTab,
   Text,
   Grid,
-  Row,
   H1,
 } from 'native-base';
 
 import {
-  Actions,
-} from 'react-native-router-flux';
+  Screen,
+  Column,
+  Row,
+  Container,
+} from 'native-structure';
 
 import {
-  ScreenStyle,
-  ColumnStyle,
-  RowStyle,
-  ContainerStyle,
-} from '../../styles/Structure';
+  Actions,
+} from 'react-native-router-flux';
 
 import {
   Scaffold,
@@ -52,7 +50,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Screen>
         <Header>
           <Left>
             <Button transparent>
@@ -67,9 +65,15 @@ class Home extends React.Component {
         <View style={ScreenStyle()}>
           <View style={Scaffold(ColumnStyle())}>
             <View style={Scaffold(RowStyle())}>
-              <H1>Hi</H1>
-              <H1>Hi</H1>
-              <H1>Hi</H1>
+              <View style={Scaffold(ContainerStyle())}>
+                <H1>Hi</H1>
+              </View>
+              <View style={Scaffold(ContainerStyle())}>
+                <H1>Hi</H1>
+              </View>
+              <View style={Scaffold(ContainerStyle())}>
+                <H1>Hi</H1>
+              </View>
             </View>
             <View style={Scaffold(ContainerStyle())}>
               <H1>Welcome To Chore Bingo!</H1>
@@ -89,7 +93,7 @@ class Home extends React.Component {
             </Button>
           </FooterTab>
         </Footer>
-      </Container>
+      </Screen>
     );
   }
   /* render() {

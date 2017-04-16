@@ -94,7 +94,7 @@ function ScreenStyle(backgroundColor='transparent',flexDirection='column') {
   return _structure(1, backgroundColor, flexDirection);
 }
 
-function ColumnStyle(flex=1, backgroundColor='transparent', hAlign='center', vAlign='flex-start') {
+function ColumnStyle(flex=1, backgroundColor='transparent', hAlign='stretch', vAlign='flex-start') {
   /*
   Flexible View style intended as a vertical subdivision of a scene.
   */
@@ -102,7 +102,7 @@ function ColumnStyle(flex=1, backgroundColor='transparent', hAlign='center', vAl
   return _.merge(style, _align('column', hAlign, vAlign), );
 }
 
-function RowStyle(flex=1, backgroundColor='transparent', hAlign='flex-start', vAlign='center') {
+function RowStyle(flex=1, backgroundColor='transparent', hAlign='center', vAlign='center') {
   /*
   Flexible View style intended as a horizontal subdivision of a scene
   */
